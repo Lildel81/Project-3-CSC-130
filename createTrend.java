@@ -16,6 +16,7 @@ public static ArrayList<String> processedWords = new ArrayList<>();
 
 
 
+
 //Ties all of the methods together to make the final string going to the GUI. 
 public static void makeTrendArray(ArrayList<String> procWords) {
 	for(int i = 0; i < strArr.size(); i++) {
@@ -23,9 +24,9 @@ public static void makeTrendArray(ArrayList<String> procWords) {
 		//System.out.println(processedWords.toString()); // for debugging
 		parseArray(processedWords, arr);
 		sort(arr);
-		seperateTrend(arr, shopItems);
 		cleanArray(arr);
-		trimArray(arr);
+		trimArray(arr, shopItemArr);
+
 	}
 }
 
@@ -49,16 +50,24 @@ public static void parseArray(ArrayList<String> strArr, ArrayList<trendWord> arr
 	
 }
 
+
 //Removes redundancy in words (deletes copies)
 public static void cleanArray(ArrayList<trendWord> arr){
+	for(int i = 0; i < arr.size(); i++){
+		arr.get(i).getPhrase().trim();
+		if (arr.get(i).getPhrase().isEmpty()){
+			arr.remove(i);
+		}
+	}
 	for(int i = 0; i < arr.size(); i++) {
 		word = arr.get(i).getPhrase();
 		word.trim();
 		
 		for(int j = arr.size()-1; j > i; j--) {
-			if (word.isBlank() || word.equalsIgnoreCase(arr.get(j).getPhrase())) {
+			if (word.equalsIgnoreCase(arr.get(j).getPhrase())) {
 				arr.remove(j);
 			}
+			
 		}
 	}
 	
@@ -79,41 +88,17 @@ public static void sort(ArrayList<trendWord> arr) {
 	}
 }
 
-public static void seperateTrend(ArrayList<trendWord> arr, ArrayList<String> shopArr){
-	String word = "";
-	String word2 = "";
-	for(int i = 0; i < arr.size(); i++){
-		word = arr.get(i).getPhrase();
-		
-		for (int k = 0; k < arr.size()-1; k++){
-			word2 = shopArr.get(k);
-			if(word.equalsIgnoreCase(word2){
-				shopItemArr.add(arr.get(i));
-			}
-			}
-		}
-	}
 
 
-public static void trimArray(ArrayList<trendWord> arr) {
-	if (arr.size() >= 10) {
-
+//Make array only 10 elements lont
+public static void trimArray(ArrayList<trendWord> arr, ArrayList<trendWord> shopItemArr) {
 		for (int i = arr.size()-1;i > 9; i--) {
 			arr.remove(i);
+
 		}
 
-   }
-   if (shopItemArr.size() >= 10){
-		for(int i = shopItemArr.size()-1; i > 9){
-			arr.remove(i);
-		}
-   }
-   for (int i = 0; i < 9; i++){
-	finalTrends[i] = arr.get(i);
-	finalTrendsInInventory[i] = shopItemArr.get(i);
-   }
+	}
 
-}
 //A wait method for debugging.
 	public static void wait(int i) {
 		i = i*1000;
